@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/liang/code/c-leanring/HTTPServer/build",
+  "command": "/usr/bin/c++   -I\"/home/liang/code/c-leanring/HTTPServer/(\" -I/home/liang/code/c-leanring/HTTPServer/include -I\"/home/liang/code/c-leanring/HTTPServer/)\"  -g   -o CMakeFiles/HTTPServer.dir/src/server.o -c /home/liang/code/c-leanring/HTTPServer/src/server.cpp",
+  "file": "/home/liang/code/c-leanring/HTTPServer/src/server.cpp"
+}
+]
