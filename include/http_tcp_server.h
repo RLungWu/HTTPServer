@@ -8,11 +8,16 @@
 #include<stdlib.h>
 #include <string>
 
+
+
+
+
 namespace http{
     class TcpServer{
         public:
             TcpServer(std::string ip, int port );
             ~TcpServer();
+            void startListen();
         private:
             std::string m_ip_address_;
             int m_port_;
@@ -26,6 +31,9 @@ namespace http{
 
             int startServer();
             void closeServer();
+            void acceptConnection(int &new_socket);
+            std::string buildResponse();
+            void sendResponse();
     };
 };
 #endif 
