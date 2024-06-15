@@ -21,21 +21,25 @@ namespace{
 
 namespace http{
     TcpServer::TcpServer(std::string ip, int port)
-        : m_ip_address_(ip), m_port_(port), m_socket_(), 
-        m_new_socket_(), m_incoming_message_(), m_socket_address_(), 
-        m_socket_address_length_(sizeof(m_socket_address_)), 
-        m_server_message_(buildResponse()){
-        // Constructor
-        
-        m_socket_address_.sin_family = AF_INET;
-        m_socket_address_.sin_addr.s_addr = inet_addr(m_ip_address_.c_str());
-        m_socket_address_.sin_port = htons(m_port_);
-        if(startServer() != 0){
-            std::ostringstream ss;
-            ss << "Failed to start server with port:" << ntohs(m_socket_address_.sin_port);
-            log(ss.str());
-        }
+    : m_ip_address_(ip), m_port_(port), m_socket_(), 
+      m_new_socket_(), m_incoming_message_(), m_socket_address_(), 
+      m_socket_address_length_(sizeof(m_socket_address_)), 
+      m_server_message_(buildResponse()) {
+    m_socket_address_.sin_family = AF_INET;
+    m_socket_address_.sin_addr.s_addr = inet_addr(m_ip_address_.c_str());
+    m_socket_address_.sin_port = htons(m_port_);
+
+    if (m_socket_address_.sin_addr.s_addr == INADDR_NONE) {
+        throw std::runtime_error("Invalid IP address.");
     }
+
+    if (startServer() != 0) {
+        std::ostringstream ss;
+        ss << "Failed to start server with port: " << m_port_;
+        throw std::runtime_error(ss.str());
+    }
+}
+
 
     TcpServer::~TcpServer(){
         // Destructor
@@ -102,6 +106,22 @@ namespace http{
             sendResponse();
 
             close(m_new_socket_);
+        }
+    }
+
+    void TcpServer::sendResponse()
+    {
+        long bytesSent;
+
+        bytesSent = write(m_new_socket_ , m_server_message_.c_str(), m_server_message_.size());
+
+        if (bytesSent == m_server_message_.size())
+        {
+            log("------ Server Response sent to client ------\n\n");
+        }
+        else
+        {
+            log("Error sending response to client");
         }
     }
 }
