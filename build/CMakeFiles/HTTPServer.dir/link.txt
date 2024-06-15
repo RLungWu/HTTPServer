@@ -1,1 +1,0 @@
-/usr/bin/c++  -g  -rdynamic CMakeFiles/HTTPServer.dir/src/server.o  -o HTTPServer 
